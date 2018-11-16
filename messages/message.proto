@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message Subscribe {
+  string topic = 1;
+  string subscriber = 2;
+}
+
+message Publish {
+    string topic = 1;
+    bytes message = 2;
+}
