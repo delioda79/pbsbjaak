@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	var addr = flag.String("port", ":9090", "http service address")
+	var addr = flag.String("addr", ":9090", "http service address")
 	flag.Parse()
 
 	hdlr := handler.NewPubSubHandler()

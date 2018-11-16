@@ -23,3 +23,7 @@ another branch with possibility to specify topics uses a different url for GET:
 and protobuf for the messages, the branch is called:
 
 ```protobuf```
+
+The address to run the server is set to ```:9090``` by default but can be changed with the flag:
+
+```-addr :80```
