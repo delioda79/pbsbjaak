@@ -23,6 +23,13 @@ another branch with possibility to specify topics uses a different url for GET:
 and protobuf for the messages, the branch is called:
 
 ```protobuf```
+In order to make the request there is an utility whch can be used this way:
+``` BASH
+
+cd makerequest
+go run main.go -url http://localhost:9090 -topic /topic1 -message HI
+
+```
 
 The address to run the server is set to ```:9090``` by default but can be changed with the flag:
 

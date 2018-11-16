@@ -6,7 +6,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/delioda79/pbsbjaak/message"
 	"github.com/delioda79/pbsbjaak/server"
+	"github.com/micro/protobuf/proto"
 )
 
 // PubSubHandler handles the http requests
@@ -32,7 +34,7 @@ func (psh PubSubHandler) handleGET(w http.ResponseWriter, r *http.Request) {
 		rqstr = frwrd
 	}
 
-	psh.pbserver.Subscribe("", rqstr)
+	psh.pbserver.Subscribe(r.URL.Path, rqstr)
 }
 
 func (psh PubSubHandler) handlePOST(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +46,15 @@ func (psh PubSubHandler) handlePOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sbs := psh.pbserver.Publish("", b)
+	pubMsg := &message.Publish{}
+	err = proto.Unmarshal(b, pubMsg)
+	if err != nil {
+		log.Println("Error while gettig the message: ", err)
+		w.WriteHeader(500)
+		w.Write([]byte("Something went wrong while decoding the message"))
+		return
+	}
+	sbs := psh.pbserver.Publish(pubMsg.GetTopic(), pubMsg.GetMessage())
 
 	w.WriteHeader(200)
 	w.Write([]byte(strconv.Itoa(sbs)))
