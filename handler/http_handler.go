@@ -1,10 +1,10 @@
 package handler
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/delioda79/pbsbjaak/server"
 )
@@ -44,10 +44,11 @@ func (psh PubSubHandler) handlePOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	sbs := psh.pbserver.Publish("", b)
+	sbs, snt := psh.pbserver.Publish("", b)
 
+	rsp, _ := json.Marshal(map[string]int{"subscribers": sbs, "sent": snt})
 	w.WriteHeader(200)
-	w.Write([]byte(strconv.Itoa(sbs)))
+	w.Write(rsp)
 }
 
 // NewPubSubHandler returns a new PubSub HTTP handler
